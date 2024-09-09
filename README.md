@@ -8,6 +8,10 @@ Convenient link generator for download manager bulk download
 pip install requirements.txt
 ```
 
+## Usage
+
+Run it then start copying links one-by-one, a folder will be created named `links` with `links.txt` file inside. 
+
 ## TODO
 
 - Finish it
