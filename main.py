@@ -13,8 +13,8 @@ def check_valid_link(link: str) -> bool:
 def link_handler_selection(url) -> Optional[Type]:
     if "fuckingfast.co" in url:
         return handler.FuckingFast
-    if "datanodes.io" in url:
-        return handler.DataNodes
+    if "datanodes.to" in url:
+        return handler.Datanodes
 
     return None
 
@@ -68,7 +68,7 @@ class ClipboardWatcher(threading.Thread):
         self._stopping = True
 
 def main():
-    watcher = ClipboardWatcher(check_valid_link, write_to_file, 1)
+    watcher = ClipboardWatcher(check_valid_link, write_to_file, 0.5)
 
     watcher.start()
     while True:
