@@ -1,6 +1,7 @@
 import threading
 import time
 import pyperclip
+import os
 from link_handler import handler
 from typing import Callable, Type, Optional
 
@@ -16,15 +17,33 @@ def link_handler_selection(url) -> Optional[Type]:
         return handler.DataNodes
 
     return None
-    
-def write_to_file(content) -> None:
+
+def generate_link(content: str) -> str:
     dl_handler = link_handler_selection(content)
     if dl_handler == None:
         raise TypeError("No handler available for the URL")
     
-    temp = dl_handler(content)
-    temp.crawl()
-    
+    handle = dl_handler(content)
+    link = handle.crawl()
+
+    return link
+
+def write_to_file(content: str, location: str="./links"):
+    file_name = "/links.txt"
+    if not os.path.exists(location):
+        os.mkdir(location)
+
+    link = generate_link(content)
+
+    if not os.path.exists(location + file_name):
+        with open(location + file_name, "w") as f:
+            f.write(link)
+    else:
+        with open(location + file_name, "a") as f:
+            f.write(f"\n{link}")
+
+    return os.path.exists(location)
+
 
 class ClipboardWatcher(threading.Thread):
     def __init__(self, predicate: Callable, callback: Callable, pause: float=5.0):
